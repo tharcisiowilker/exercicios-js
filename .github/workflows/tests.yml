@@ -1,0 +1,34 @@
+name: Testes
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Verificar integridade dos arquivos de teste
+        run: |
+          check_file() {
+            local file=$1
+            local expected=$2
+            local actual=$(sha256sum "$file" | cut -d' ' -f1)
+            if [ "$actual" != "$expected" ]; then
+              echo "❌ O arquivo '$file' foi modificado. Arquivos .test.js não podem ser alterados."
+              exit 1
+            fi
+            echo "✅ $file — OK"
+          }
+
+          check_file "exercicios/aula05/index.test.js" "26a5414c68fa7acba590ee6edad325ca801d93757cf3812bd5c09680db2c2e9c"
+          check_file "exercicios/aula06/index.test.js" "d5972695d5aa6446becded594af95c04e3e18e62c93f398eb5db875c539d10df"
+          check_file "exercicios/aula07/index.test.js" "c8bda503da54bf38254733ba4cd7e36ec314f89859f5aaa2101af95a62056448"
+          check_file "exercicios/aula08/index.test.js" "b286e905a397d470e41265601f2f5dbc6701c296d869a41737e378f7fd49d9b2"
+
+      - run: npm install
+      - run: npm test

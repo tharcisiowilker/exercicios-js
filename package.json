@@ -1,0 +1,13 @@
+{
+  "name": "exercicios-js",
+  "version": "1.0.0",
+  "description": "Exercícios de JavaScript — Desenvolvimento Web (IFNMG Campus Salinas)",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^3.1.1"
+  }
+}
